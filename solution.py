@@ -27,7 +27,7 @@ def solution(path_config):
     step_reduction = config["algorithm_settings"]["step_reduction"]
 
     name_solutions = ""
-    if config["name_solutions"] == "None":
+    if config["name_solutions"] == "":
         i = 1
         while True:
             if os.path.exists(f'daraset/1.csv'):
