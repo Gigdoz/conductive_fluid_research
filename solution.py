@@ -6,8 +6,8 @@ import json
 import os
 
 
-def solution(path_config):
-    with open(path_config) as f:
+def solution(name_config):
+    with open(f'configs/{name_config}.json') as f:
         config = json.load(f)
 
     name_solutions = ""
