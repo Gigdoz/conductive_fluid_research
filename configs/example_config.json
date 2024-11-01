@@ -4,15 +4,16 @@
     },
 
     "control_constants" : {
-        "e" : [100.0, 105.0, 1.0],
-        "v" : [2.3, 2.5, 0.1]
+        "series" : true,
+        "e" : [50.0, 100.0, 150.0],
+        "v" : [2.0]
     },
 
     "algorithm_settings" : {
-        "total_time" : 20.0,
-        "max_step" : 0.002,
-        "eps" : 0.01,
-        "auto_step" : true,
+        "total_time" : 10.0,
+        "max_step" : 0.01,
+        "eps" : 0.001,
+        "auto_step" : false,
         "step_reduction" : 0.8
     },
 
