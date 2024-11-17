@@ -1,9 +1,9 @@
-from methods.odes import solve_rk4
 import numpy as np
-import pandas as pd
-from math_functions import *
 import json
 import os
+import csv
+from ctypes import *
+lib = CDLL("./lib/odeslib.dll")
 
 
 def solution(name_config):
@@ -31,7 +31,6 @@ def solution(name_config):
     for name in config["initial_conditions"]:
         name_columns.append(name)
         initial_conditions.append(config["initial_conditions"][name])
-    initial_conditions = np.array(initial_conditions)
 
     E = []
     if not config["control_constants"]["series"]:
@@ -43,19 +42,30 @@ def solution(name_config):
         E = config["control_constants"]["e"]
         V = config["control_constants"]["v"]
 
-    total_time = config["algorithm_settings"]["total_time"]
-    max_step = config["algorithm_settings"]["max_step"]
-    eps = config["algorithm_settings"]["eps"]
-    auto_step = config["algorithm_settings"]["auto_step"]
-    step_reduction = config["algorithm_settings"]["step_reduction"]
+    t0 = config["algorithm_settings"]["t0"]
+    t_end = config["algorithm_settings"]["t_end"]
+    tol = config["algorithm_settings"]["tol"]
+    h_init = config["algorithm_settings"]["h_init"]
+    h_min = config["algorithm_settings"]["h_min"]
+    h_max = config["algorithm_settings"]["h_max"]
+    output_step = config["algorithm_settings"]["output_step"]
+
+    consts_init = [0.0, 0.0] + initial_conditions
+    seq = c_double * len(consts_init)
+    consts_init = seq(*consts_init)
 
     for e in E:
+        consts_init[0] = c_double(e)
         for v in V:
-            solution = solve_rk4(([e, v], initial_conditions, sys_equations),
-                                    total_time, max_step, eps, auto_step, step_reduction)
-            
             name = name_dir + f'/e={e}; v={v}.csv'
-            pd.DataFrame(data=solution, columns=name_columns).to_csv(name, index=False)
+            with open(name, mode="w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(name_columns)  # Заголовки столбцов
+            
+            consts_init[1] = c_double(v)
+            lib.solve_rkf45(name.encode('utf-8'), consts_init, c_double(t0),
+                            c_double(t_end), c_double(tol), c_double(h_init),
+                            c_double(h_min), c_double(h_max), c_double(output_step))
 
 
 import sys

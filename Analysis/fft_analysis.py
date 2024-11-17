@@ -4,7 +4,6 @@ from scipy.fft import fft, fftfreq
 import numpy as np
 import os
 
-
 def plot_fft(name_dir, mag):
     path_dir = f'datasets/{name_dir}'
 
@@ -24,12 +23,13 @@ def plot_fft(name_dir, mag):
 
             fig = plt.figure()
             ax = fig.add_subplot(1, 1, 1)
-            ax.plot(fr, Xf, 'k', lw=0.8)
+            markerline, stemlines, baseline = ax.stem(fr, Xf, linefmt ='black', markerfmt ='')
+            plt.setp(stemlines, 'linewidth', 0.9)
+            plt.setp(baseline, visible=False)
             ax.set_xlabel("v")
             ax.set_ylabel(f'{mag} Magnitude')
             ax.grid()
             plt.savefig(name_dir+f'/{mag} {file[:-4]}.png')
-
 
 import sys
 plot_fft(sys.argv[1], sys.argv[2])
