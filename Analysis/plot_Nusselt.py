@@ -1,26 +1,24 @@
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import numpy as np
 import pandas as pd
 import os
 
 
 def plot_surf(path_name):
     fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
+    ax = fig.add_subplot()
 
     df = pd.read_csv("./datasets/" + path_name)
     df['t'] = 1.0 / df['v']
-    surf = ax.plot_trisurf(df.t, df.e, df.Nu, cmap=cm.inferno, linewidth=0.5, antialiased=False)
+    df_p = pd.pivot_table(data=df,index='t',columns='e', values='Nu')
+    e, t = np.meshgrid(df_p.index.values, df_p.columns.values)
+    Nu = df_p.values.T
+    pc = ax.pcolormesh(e, t, Nu, shading='nearest')
 
     ax.set_xlabel("t")
     ax.set_ylabel("e")
-    ax.set_zlabel("Nu")
 
-    fig.colorbar(surf, shrink=0.5, aspect=10)
-    ax.zaxis.set_major_locator(LinearLocator(10))
-    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-    fig.tight_layout()
+    fig.colorbar(pc, shrink=0.5, aspect=10)
 
     name_dir = f'image/Nusselt'
     if not os.path.exists(name_dir):
