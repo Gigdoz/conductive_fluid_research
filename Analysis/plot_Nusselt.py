@@ -10,7 +10,6 @@ def plot_surf(path_name):
     ax = fig.add_subplot(projection='3d')
 
     df = pd.read_csv("./datasets/" + path_name)
-    print(df)
     E = df.e.values
     V = df.v.values
     e = np.unique(E)
@@ -21,8 +20,8 @@ def plot_surf(path_name):
     surf = ax.plot_surface(V, E, Nu, rstride=1, cstride=1, cmap=cm.coolwarm,
                         linewidth=0, antialiased=False)
 
-    ax.set_xlabel("e")
-    ax.set_ylabel("v")
+    ax.set_xlabel("v")
+    ax.set_ylabel("e")
     ax.set_zlabel("Nu")
     fig.colorbar(surf, shrink=0.5, aspect=10)
 
