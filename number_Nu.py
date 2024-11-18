@@ -48,6 +48,11 @@ def solution(name_config):
     V = seq(*V)
 
     name = name_dir + '/nusselt.csv'
+    i = 1
+    while(os.path.exists(name)):
+         name = name_dir + f'/nusselt_{i}.csv'
+         i += 1
+         
     name_columns = ['e', 'v', 'Nu']
     with open(name, mode="w", newline="") as file:
                 writer = csv.writer(file)

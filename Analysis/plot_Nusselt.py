@@ -28,7 +28,13 @@ def plot_surf(path_name):
     name_dir = f'image/Nusselt'
     if not os.path.exists(name_dir):
         os.makedirs(name_dir)
-    plt.savefig(name_dir+'/Nu_V_E.png')
+
+    name = name_dir + '/nusselt.png'
+    i = 1
+    while(os.path.exists(name)):
+         name = name_dir + f'/nusselt_{i}.png'
+         i += 1
+    plt.savefig(name)
     plt.show()
 
 
