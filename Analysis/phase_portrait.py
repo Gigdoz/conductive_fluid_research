@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import re
 
-from Analysis.math_functions import f1
+from math_functions import f1
 
 
 def plot_phase(name_dir):
@@ -26,13 +26,15 @@ def plot_phase(name_dir):
             df = pd.read_csv(path_dir + f'/{file}')
             dX = []
             X = []
+            t = []
             for i, row in df.iterrows():
+                t.append(row.time)
                 X.append(row.X)
                 dX.append(f1([e, v], row.time, row[1:]))
             
             fig = plt.figure()
-            ax = fig.add_subplot(1, 1, 1)
-            ax.plot(X, dX, 'k', lw=0.8)
+            ax = fig.add_subplot(1, 1, 1, projection='3d')
+            ax.plot(X, dX, t, 'k', lw=0.8)
             ax.set_xlabel("X")
             ax.set_ylabel('dX')
             ax.grid()

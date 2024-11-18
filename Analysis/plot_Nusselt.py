@@ -10,9 +10,10 @@ def plot_surf(path_name):
     ax = fig.add_subplot(projection='3d')
 
     df = pd.read_csv("./datasets/" + path_name)
-    surf = ax.plot_trisurf(df.v, df.e, df.Nu, cmap=cm.inferno, linewidth=0.5, antialiased=False)
+    df['t'] = 1.0 / df['v']
+    surf = ax.plot_trisurf(df.t, df.e, df.Nu, cmap=cm.inferno, linewidth=0.5, antialiased=False)
 
-    ax.set_xlabel("v")
+    ax.set_xlabel("t")
     ax.set_ylabel("e")
     ax.set_zlabel("Nu")
 
