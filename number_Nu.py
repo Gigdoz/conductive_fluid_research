@@ -1,38 +1,9 @@
-import numpy as np
 import json
 import os
 import csv
 
 from ctypes import *
 lib = CDLL("./lib/odeslib.dll")
-
-import matplotlib.pyplot as plt
-from matplotlib import cm
-
-
-def plot_surf(res):
-    fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
-
-    E = res[:, 0]
-    V = res[:, 1]
-    e = np.unique(E)
-    v = np.unique(V)
-    Nu = res[:, 2].reshape(len(e), len(v))
-    V, E = np.meshgrid(v, e)
-    surf = ax.plot_surface(V, E, Nu, rstride=1, cstride=1, cmap=cm.coolwarm,
-                        linewidth=0, antialiased=False)
-
-    ax.set_xlabel("e")
-    ax.set_ylabel("v")
-    ax.set_zlabel("Nu")
-    fig.colorbar(surf, shrink=0.5, aspect=10)
-
-    name_dir = f'image/Nusselt'
-    if not os.path.exists(name_dir):
-        os.makedirs(name_dir)
-    plt.savefig(name_dir+'/Nu_V_E.png')
-    plt.show()
 
 
 def solution(name_config):
