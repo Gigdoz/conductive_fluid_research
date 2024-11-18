@@ -36,7 +36,8 @@ def plot_phase(name_dir):
             ax = fig.add_subplot(1, 1, 1, projection='3d')
             ax.plot(X, dX, t, 'k', lw=0.8)
             ax.set_xlabel("X")
-            ax.set_ylabel('dX')
+            ax.set_ylabel('dX/dt')
+            ax.set_zlabel('time')
             ax.grid()
             plt.savefig(name_dir+f'/{file[:-4]}.png')
 
