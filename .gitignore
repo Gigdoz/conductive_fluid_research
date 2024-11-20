@@ -1,4 +1,5 @@
-/__pycache__
-/Analysis/__pycache__
-/image
-/datasets
+/.vscode
+/research/__pycache__
+/research/image
+/research/datasets
+/odeslib/build

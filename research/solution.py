@@ -1,9 +1,21 @@
 import numpy as np
 import json
-import os
 import csv
+import os
+import platform
+
+os_name = platform.system()
+
 from ctypes import *
-lib = CDLL("./lib/odeslib.dll")
+
+n = ""
+if os_name == "Windows":
+    n = "dll"
+elif os_name == "Linux":
+    n = "so"
+else:
+     print("Неизвестная ОС")
+lib = CDLL(f"../odeslib/lib/odeslib.{n}")
 
 
 def solution(name_config):
