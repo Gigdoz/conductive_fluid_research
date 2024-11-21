@@ -53,15 +53,17 @@ def solution(name_config):
     seq = c_double * len(initial_conditions)
     init = seq(*initial_conditions)
 
+    name0 = name_dir + f'/nusselt e={E[0]}-{E[1]}; v={V[0]}-{V[1]}'
+    i = 1
+    name = ""
+    while(os.path.exists(name0 + ".csv")):
+         name = name0 + f'_{i}'
+         i += 1
+    name += ".csv"
+
     seq = c_double * len(E)
     E = seq(*E)
     V = seq(*V)
-
-    name = name_dir + '/nusselt.csv'
-    i = 1
-    while(os.path.exists(name)):
-         name = name_dir + f'/nusselt_{i}.csv'
-         i += 1
          
     name_columns = ['e', 'v', 'Nu']
     with open(name, mode="w", newline="") as file:

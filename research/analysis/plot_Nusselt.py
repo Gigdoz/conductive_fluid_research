@@ -18,9 +18,10 @@ def plot_surf(path_name):
     ax.set_xlabel("t")
     ax.set_ylabel("e")
 
-    fig.colorbar(pc, shrink=0.5, aspect=10)
+    c = fig.colorbar(pc, shrink=0.5, aspect=10)
+    c.set_label("Nu")
 
-    name_dir = f'image/Nusselt'
+    name_dir = f'image/nusselt'
     if not os.path.exists(name_dir):
         os.makedirs(name_dir)
 
