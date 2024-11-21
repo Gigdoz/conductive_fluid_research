@@ -3,7 +3,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-// ������������ ������ �����-�����-��������� (Butcher tableau)
 const double A[6] = { 0.0, 1.0 / 4.0, 3.0 / 8.0, 12.0 / 13.0, 1.0, 1.0 / 2.0 };
 const double B[6][6] = {
     { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
@@ -43,9 +42,21 @@ double Norm(const double arr1[], const double arr2[], int size) {
     return sqrt(norm);
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-extern "C" __declspec(dllexport)
-int solve_rkf45(char* path_file, double consts_init[8], double t0,
+#ifdef _WIN32
+#  ifdef MODULE_API_EXPORTS
+#    define MODULE_API __declspec(dllexport)
+#  else
+#    define MODULE_API __declspec(dllimport)
+#  endif
+#else
+#  define MODULE_API
+#endif
+
+MODULE_API int solve_rkf45(char* path_file, double consts_init[8], double t0,
     double t_end, double tol = 1e-6, double h_init = 0.1,
     double h_min = 1e-6, double h_max = 1.0, double output_step = 0.01) {
 
@@ -54,12 +65,11 @@ int solve_rkf45(char* path_file, double consts_init[8], double t0,
         return -1;
     }
 
-    // ������������� ����������
     double t = t0;
     const double e = consts_init[0];
     const double v = consts_init[1];
     double h = h_init;
-    double next_output_time = t0; // ��������� ����� ��� ������
+    double next_output_time = t0; 
 
     const int num_funs = 6;
     double y[num_funs];
@@ -69,12 +79,10 @@ int solve_rkf45(char* path_file, double consts_init[8], double t0,
 
     double k[6][num_funs];
     while (t < t_end) {
-        // ��������, ��� ��� �� ������� �� �������
         if (t + h > t_end) {
             h = t_end - t;
         }
 
-        // ���������� ������������� �������� K
         for (int i = 0; i < 6; i++) {
             double ti = t + A[i] * h;
             for (int p = 0; p < num_funs; p++) {
@@ -92,7 +100,6 @@ int solve_rkf45(char* path_file, double consts_init[8], double t0,
             }
         }
 
-        // ������ ������� 4-�� � 5-�� �������
         double y4[num_funs];
         double y5[num_funs];
 
@@ -109,16 +116,12 @@ int solve_rkf45(char* path_file, double consts_init[8], double t0,
             y5[i] = y[i] + h * sum2[i];
         }
 
-        // ������ ��������� ������
         double error = Norm(y5, y4, num_funs);
 
-        // �������� �� ������������ ������
         if (error < tol) {
-            // ��� �������: ��������� �������� y � t
             t += h;
             Copy(y, y5, num_funs);
 
-            // ������ ������ � ����
             if (t >= next_output_time) {
                 fprintf(fp, "%lf, ", t);
                 for (int i = 0; i < num_funs - 1; i++) {
@@ -129,7 +132,6 @@ int solve_rkf45(char* path_file, double consts_init[8], double t0,
             }
         }
 
-        // ���������� �������� ����
         if (error > 0.0) {
             h *= fmin(fmax(0.84 * pow(tol / error, 0.25), 0.1), 4.0);
         }
@@ -139,9 +141,7 @@ int solve_rkf45(char* path_file, double consts_init[8], double t0,
 	return 0;
 }
 
-
-extern "C" __declspec(dllexport)
-int nusselt_number(char* path_file, double E[3], double V[3], double init[6], double t0,
+MODULE_API int nusselt_number(char* path_file, double E[3], double V[3], double init[6], double t0,
     double t_end, double tol = 1e-6, double h_init = 0.1,
     double h_min = 1e-6, double h_max = 1.0) {
 
@@ -150,7 +150,6 @@ int nusselt_number(char* path_file, double E[3], double V[3], double init[6], do
         return -1;
     }
 
-    // ������������� ����������
     double h = h_init;
 
     const int num_funs = 6;
@@ -158,16 +157,13 @@ int nusselt_number(char* path_file, double E[3], double V[3], double init[6], do
     for (double e = E[0]; e <= E[1]; e += E[2]) {
         for (double v = V[0]; v <= V[1]; v += V[2]) {
 
-            // ������� �������
             double y[num_funs];
             Copy(y, init, num_funs);
             for (double t = t0; t < t_end;) {
-                // ��������, ��� ��� �� ������� �� �������
                 if (t + h > t_end) {
                     h = t_end - t;
                 }
 
-                // ���������� ������������� �������� K
                 for (int i = 0; i < 6; i++) {
                     double ti = t + A[i] * h;
                     for (int p = 0; p < num_funs; p++) {
@@ -185,7 +181,6 @@ int nusselt_number(char* path_file, double E[3], double V[3], double init[6], do
                     }
                 }
 
-                // ������ ������� 4-�� � 5-�� �������
                 double y4[num_funs];
                 double y5[num_funs];
 
@@ -202,17 +197,13 @@ int nusselt_number(char* path_file, double E[3], double V[3], double init[6], do
                     y5[i] = y[i] + h * sum2[i];
                 }
 
-                // ������ ��������� ������
                 double error = Norm(y5, y4, num_funs);
 
-                // �������� �� ������������ ������
                 if (error < tol) {
-                    // ��� �������: ��������� �������� y � t
                     t += h;
                     Copy(y, y5, num_funs);
                 }
 
-                // ���������� �������� ����
                 if (error > 0.0) {
                     h *= fmin(fmax(0.84 * pow(tol / error, 0.25), 0.1), 4.0);
                 }
@@ -227,4 +218,8 @@ int nusselt_number(char* path_file, double E[3], double V[3], double init[6], do
     }
     
     return 0;
+} 
+
+#ifdef __cplusplus
 }
+#endif

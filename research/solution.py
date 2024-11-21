@@ -10,12 +10,12 @@ from ctypes import *
 
 n = ""
 if os_name == "Windows":
-    n = "dll"
+    n = "odeslib.dll"
 elif os_name == "Linux":
-    n = "so"
+    n = "libodeslib.so"
 else:
      print("Неизвестная ОС")
-lib = CDLL(f"../odeslib/lib/odeslib.{n}")
+lib = CDLL(f"../odeslib/lib/{n}")
 
 
 def solution(name_config):
