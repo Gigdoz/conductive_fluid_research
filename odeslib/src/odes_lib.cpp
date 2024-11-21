@@ -47,11 +47,7 @@ extern "C" {
 #endif
 
 #ifdef _WIN32
-#  ifdef MODULE_API_EXPORTS
-#    define MODULE_API __declspec(dllexport)
-#  else
-#    define MODULE_API __declspec(dllimport)
-#  endif
+#  define MODULE_API __declspec(dllexport)
 #else
 #  define MODULE_API
 #endif
