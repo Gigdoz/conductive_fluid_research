@@ -8,7 +8,7 @@ def plot_surf(path_name):
     fig = plt.figure()
     ax = fig.add_subplot()
 
-    df = pd.read_csv("./datasets/" + path_name)
+    df = pd.read_csv("../datasets/" + path_name)
     df['t'] = 1.0 / df['v']
     df_p = pd.pivot_table(data=df,index='t',columns='e', values='Nu')
     e, t = np.meshgrid(df_p.index.values, df_p.columns.values)
@@ -21,7 +21,7 @@ def plot_surf(path_name):
     c = fig.colorbar(pc, shrink=0.5, aspect=10)
     c.set_label("Nu")
 
-    name_dir = f'image/nusselt'
+    name_dir = f'../image/nusselt'
     if not os.path.exists(name_dir):
         os.makedirs(name_dir)
 
