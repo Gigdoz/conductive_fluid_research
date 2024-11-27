@@ -68,7 +68,7 @@ def solution(name_config):
     name_columns = ['e', 'v', 'Nu']
     with open(name, mode="w", newline="") as file:
                 writer = csv.writer(file)
-                writer.writerow(name_columns)  # Заголовки столбцов
+                writer.writerow(name_columns)
 
     lib.nusselt_number(name.encode('utf-8'), E, V, init, c_double(t0),
                     c_double(t_end), c_double(tol), c_double(h_init),
