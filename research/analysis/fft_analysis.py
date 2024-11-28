@@ -5,9 +5,9 @@ import numpy as np
 import os
 
 def plot_fft(name_dir, mag):
-    path_dir = f'../datasets/{name_dir}'
+    path_dir = f'./datasets/{name_dir}'
 
-    name_dir = f'../image/fft/{name_dir}'
+    name_dir = f'./image/fft/{name_dir}'
     if not os.path.exists(name_dir):
         os.makedirs(name_dir)
 

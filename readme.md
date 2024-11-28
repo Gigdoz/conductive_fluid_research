@@ -97,11 +97,11 @@ https://en.wikipedia.org/wiki/List_of_Runge–Kutta_methods
 `python3 analisys/phase_portrait.py "<name_dir>"`.
 <br>
 
-`plot_Nusselt.py`
-Передается имя csv-файла содержащееся в директории `datasets\nusselt`, полученный в результате работы `number_Nu.py`.
-В итоге получаем `image\nusselt\nusselt_i`.
+`plot_nusselt.py`
+Передается 1 аргументом имя директории и 2 имя csv-файла содержащееся в `datasets`, полученный в результате работы `number_Nu.py`.
+В итоге получаем `image\<name_dir>\<name_file>`.
 Для запуска нужно ввести в консоль команду:
-`python3 analisys/plot_Nusselt.py "<name_dir>/<name_file>"`.
+`python3 analisys/plot_nusselt.py "<name_dir>/<name_file>"`.
 <br>
 
 **util** директория с вспомогательными скриптами и алгоритмами.
@@ -125,7 +125,7 @@ https://en.wikipedia.org/wiki/List_of_Runge–Kutta_methods
     - `output_step` - шаг по времени, с которым результаты записываются в файл
 - `name_solutions` - имя папки куда будут выгружаться файлы с решением.
 
-Для `nusselt_number` тоже самое, просто некоторые параметры не будут учитываться.
+Для `nusselt_Nu` тоже самое, просто некоторые параметры не будут учитываться.
 И `control_constants` нужно передовать в виде `[start, stop, step]`.
 <br>
 

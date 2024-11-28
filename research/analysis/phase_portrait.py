@@ -7,9 +7,9 @@ from math_functions import f1
 
 
 def plot_phase(name_dir):
-    path_dir = f'../datasets/{name_dir}'
+    path_dir = f'./datasets/{name_dir}'
 
-    name_dir = f'../image/phase/{name_dir}'
+    name_dir = f'./image/phase/{name_dir}'
     if not os.path.exists(name_dir):
         os.makedirs(name_dir)
 

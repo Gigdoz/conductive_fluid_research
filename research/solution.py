@@ -26,7 +26,7 @@ def solution(name_config):
     if config["name_solutions"] == "":
         i = 1
         while True:
-            if os.path.exists(f'daraset/{i}'):
+            if os.path.exists(f'datasets/{i}'):
                 i += 1
             else:
                 name_solutions = str(i)

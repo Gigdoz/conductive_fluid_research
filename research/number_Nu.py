@@ -55,7 +55,7 @@ def solution(name_config):
 
     name0 = name_dir + f'/nusselt e={E[0]}-{E[1]}; v={V[0]}-{V[1]}'
     i = 1
-    name = ""
+    name = name0
     while(os.path.exists(name0 + ".csv")):
          name = name0 + f'_{i}'
          i += 1
