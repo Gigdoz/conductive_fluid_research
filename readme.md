@@ -19,7 +19,7 @@ mkdir build; cd build; cmake ..; cmake --build .
 **research**, это *Python* проект для получение решений и их обработка.
 1. В **analysis** содержатся скрипты для получения графиков для анализа результатов:
     1. Фурье-преобразование `fft_analysis.py`
-    2. Фазовый портрет для амплитуды X `phase_portrait.py`
+    2. Фазовый портрет рисует траекторию в 3 координатах амплитуд `phase_portrait.py`
     2. Получение тепловой карты для числа Нуссельта в зависимости от электрической постоянной и начальной частоты `plot_Nusselt.py`.
 
     Для наглядности система ОДУ записана в файле `math_functions.py`.
@@ -93,8 +93,9 @@ https://en.wikipedia.org/wiki/List_of_Runge–Kutta_methods
 `phase_portrait.py`
 Передается имя папки содержащееся в директории `datasets`.
 В результате получаем `image\phase\<имя передаваймой папки>`.
-Для запуска нужно ввести в консоль команду:
-`python3 analisys/phase_portrait.py "<name_dir>"`.
+Для запуска нужно ввести в консоль команду (набор амплитуд может быть любым, этот набор выбран для примера):
+`python3 analisys/phase_portrait.py "<name_dir>" "X Y Z"`.
+
 <br>
 
 `plot_nusselt.py`
