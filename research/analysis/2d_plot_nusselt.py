@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 
-def plot_surf(name_dir, name_file):
+def plot(name_dir, name_file):
     fig = plt.figure()
     ax = fig.add_subplot()
 
@@ -29,4 +29,4 @@ def plot_surf(name_dir, name_file):
 
 
 import sys
-plot_surf(sys.argv[1], sys.argv[2])
+plot(sys.argv[1], sys.argv[2])
