@@ -15,21 +15,24 @@ def plot_fft(name_dir, mag):
         for file in files:
             df = pd.read_csv(path_dir + f'/{file}')
             dt = df.time[1] - df.time[0]
+            n = int(2.0 / dt)
+            df = df[n:]
 
             N = len(df.time)
             n = int(1/(20*dt))
-            Xf = 2.0/N * np.abs(fft(df[mag].values))[:N//n]
-            fr = fftfreq(N, dt)[:N//n]
+            Xf = 2.0/N * np.abs(fft(df[mag].values))[1:N//n]
+            fr = fftfreq(N, dt)[1:N//n]
 
             fig = plt.figure()
             ax = fig.add_subplot(1, 1, 1)
-            markerline, stemlines, baseline = ax.stem(fr, Xf, linefmt ='black', markerfmt ='')
+            _, stemlines, baseline = ax.stem(fr, Xf, linefmt ='black', markerfmt ='')
             plt.setp(stemlines, 'linewidth', 0.9)
             plt.setp(baseline, visible=False)
             ax.set_xlabel("v")
-            ax.set_ylabel(f'{mag} Magnitude')
+            ax.set_ylabel(f'{mag}')
             ax.grid()
             plt.savefig(name_dir+f'/{mag} {file[:-4]}.png')
+            plt.close()
 
 import sys
 plot_fft(sys.argv[1], sys.argv[2])

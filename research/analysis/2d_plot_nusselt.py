@@ -24,7 +24,7 @@ def plot(name_dir, name_file):
     if not os.path.exists(name_dir):
         os.makedirs(name_dir)
 
-    name = name_dir + f'/{name_file}.png'
+    name = name_dir + f'/{name_file[:-4]}.png'
     plt.savefig(name)
 
 
