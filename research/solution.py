@@ -69,7 +69,7 @@ def solution(name_config):
     for e in E:
         consts_init[0] = c_double(e)
         for v in V:
-            name = name_dir + f'/e={e}; v={v}.csv'
+            name = name_dir + f'/e={round(e, 3)}; v={round(v, 3)}.csv'
             with open(name, mode="w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow(name_columns)  # Заголовки столбцов
