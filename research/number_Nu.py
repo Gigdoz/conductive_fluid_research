@@ -45,23 +45,18 @@ def solution(name_config):
     h_init = config["algorithm_settings"]["h_init"]
     h_min = config["algorithm_settings"]["h_min"]
     h_max = config["algorithm_settings"]["h_max"]
+    continue_by_par = config["algorithm_settings"]["continue_by_par"]
 
     initial_conditions = []
     for name in config["initial_conditions"]:
         initial_conditions.append(config["initial_conditions"][name])
 
-    seq = c_double * len(initial_conditions)
+    seq = c_longdouble * len(initial_conditions)
     init = seq(*initial_conditions)
 
-    name0 = name_dir + f'/nusselt e={E[0]}-{E[1]}; v={V[0]}-{V[1]}'
-    i = 1
-    name = name0
-    while(os.path.exists(name0 + ".csv")):
-         name = name0 + f'_{i}'
-         i += 1
-    name += ".csv"
+    name = name_dir + f'/nusselt e={E[0]}-{E[1]}; v={V[0]}-{V[1]}.csv'
 
-    seq = c_double * len(E)
+    seq = c_longdouble * len(E)
     E = seq(*E)
     V = seq(*V)
          
