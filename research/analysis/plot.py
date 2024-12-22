@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 
-def plot_phase(name_dir, amp):
+def plot(name_dir, amp):
     path_dir = f'./datasets/{name_dir}'
 
     name_dir = f'./image/time_series/{name_dir}'

@@ -91,21 +91,36 @@ https://en.wikipedia.org/wiki/List_of_Runge–Kutta_methods
 <br>
 
 `phase_portrait.py`
+Для отрисовки фазавого портрета.
 Передается имя папки содержащееся в директории `datasets`.
 В результате получаем `image\phase\<имя передаваймой папки>`.
 Для запуска нужно ввести в консоль команду (набор амплитуд может быть любым, этот набор выбран для примера):
-`python3 analisys/phase_portrait.py "<name_dir>" "X Y Z"`.
+`python3 analisys/phase_portrait.py "<name_dir>" "X Y"`.
 
 <br>
 
 `plot_nusselt.py`
-Передается 1 аргументом имя директории и 2 имя csv-файла содержащееся в `datasets`, полученный в результате работы `number_Nu.py`.
+Передается 2 аргументом имя директории и 2 имя csv-файла содержащееся в `datasets`, полученный в результате работы `number_Nu.py`.
 В итоге получаем `image\<name_dir>\<name_file>`.
 Для запуска нужно ввести в консоль команду:
-`python3 analisys/plot_nusselt.py "<name_dir>/<name_file>"`.
+`python3 analisys/plot_nusselt.py "<name_dir>" "<name_file>"`.
 <br>
 
-**util** директория с вспомогательными скриптами и алгоритмами.
+`nusselt_transition_plot.py`
+Для зависимости числа Нуссельта при одном фиксированном параметре.
+Передается 2 аргументом имя директории и 2 имя csv-файла содержащееся в `datasets`, полученный в результате работы `number_Nu.py`.
+В итоге получаем `image\<name_dir>\<name_file>`.
+Для запуска нужно ввести в консоль команду:
+`python3 analisys/nusselt_transition_plot.py "<name_dir>" "<name_file>"`.
+<br>
+
+`plot.py`
+График для временного ряда.
+Передается 1 аргументом имя директории и 2 имя csv-файла содержащееся в `datasets`, полученный в результате работы `solution.py`.
+В итоге получаем `image\<name_dir>`.
+Для запуска нужно ввести в консоль команду:
+`python3 analisys/plot.py "<name_dir>" "X"`.
+<br>
 
 `combine_datasets.py` нужен для объединение датасетов nusselt, так как расчет может производиться кусочно из-за того, что в некоторых зонах нужно увеличивать разрешенность картинки.
 <br>
