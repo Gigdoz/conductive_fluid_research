@@ -15,28 +15,16 @@ elif os_name == "Linux":
     n = "libodeslib.so"
 else:
      print("Неизвестная ОС")
-lib = CDLL(f"../odeslib/lib/{n}")
+lib = CDLL(f"app/extensions/{n}")
 
 
 def solution(name_config):
     with open(f'configs/{name_config}.json') as f:
         config = json.load(f)
 
-    name_solutions = ""
-    if config["name_solutions"] == "":
-        i = 1
-        while True:
-            if os.path.exists(f'daraset/{i}'):
-                i += 1
-            else:
-                name_solutions = str(i)
-                break
-    else:
-        name_solutions = config["name_solutions"]
-
-    name_dir = 'datasets/' + name_solutions
-    if not os.path.exists(name_dir):
-        os.makedirs(name_dir)
+    path_solutions = config["path_solutions"]
+    if not os.path.exists(path_solutions):
+        os.makedirs(path_solutions)
 
     name_columns = ['time']
     initial_conditions = []
@@ -53,6 +41,10 @@ def solution(name_config):
     else:
         E = config["control_constants"]["e"]
         V = config["control_constants"]["v"]
+        if isinstance(E, float):
+            E = [E]
+        if isinstance(V, float):
+            V = [V]
 
     t0 = config["algorithm_settings"]["t0"]
     t_end = config["algorithm_settings"]["t_end"]
@@ -69,7 +61,7 @@ def solution(name_config):
     for e in E:
         consts_init[0] = c_double(e)
         for v in V:
-            name = name_dir + f'/e={e}; v={v}.csv'
+            name = path_solutions + f'/e={e}; v={v}.csv'
             with open(name, mode="w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow(name_columns)  # Заголовки столбцов
@@ -78,7 +70,3 @@ def solution(name_config):
             lib.solve_rkf45(name.encode('utf-8'), consts_init, c_double(t0),
                             c_double(t_end), c_double(tol), c_double(h_init),
                             c_double(h_min), c_double(h_max), c_double(output_step))
-
-
-import sys
-solution(sys.argv[1])

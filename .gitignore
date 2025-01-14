@@ -1,5 +1,12 @@
 /.vscode
-/research/__pycache__
-/research/image
-/research/datasets
+/__pycache__
+/app/__pycache__
+/app/research/__pycache__
+/app/research/analysis/__pycache__
+/app/interface/__pycache__
+/app/research/image
+/app/research/datasets
 /odeslib/build
+/data
+/image
+/configs
