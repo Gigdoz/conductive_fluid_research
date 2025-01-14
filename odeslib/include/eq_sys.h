@@ -23,7 +23,7 @@ long double Z(long double e, long double v, long double t, const long double y[]
 }
 
 long double V(long double e, long double v, long double t, const long double y[]) {
-	double c = cos(2.0 * PI * v * t);
+	long double c = cos(2.0 * PI * v * t);
 	return - Pr * (d * y[3] + e * y[1] * c * c / d);
 }
 
