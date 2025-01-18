@@ -61,7 +61,8 @@ def solution(name_config):
                 
                 sol = solve_ivp(f, (t0, t_end), initial_conditions, t_eval=[t0, t_end],
                                 rtol=rtol, atol=atol)
-                writer.writerow([e, v, sol.y[5][-1]])
+                Nu = 1 - 2 / (t_end - t0) * sol.y[5][-1]
+                writer.writerow([e, v, Nu])
                 if continue_by_par:
                     initial_conditions = [sol.y[0][-1],sol.y[1][-1],
                                  sol.y[2][-1],sol.y[3][-1],sol.y[4][-1], 0.0]
