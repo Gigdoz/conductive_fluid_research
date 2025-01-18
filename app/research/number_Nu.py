@@ -1,20 +1,27 @@
 import json
 import csv
+import numpy as np
 import os
-import platform
+from math import *
+from scipy.integrate import solve_ivp
 
-os_name = platform.system()
+Pr = 100.0
+r = .0
+k = 0.962
+b = 4/(1+k**2)
+d = (4+k**2)/(1+k**2)
 
-from ctypes import *
+def sys(const, t, state):
+    e, v = const
+    X, Y, Z, V, W, Nu_y = state
+    dX = Pr*(-X+e*W*(cos(2.0*pi*v*t))**2)
+    dY = -Y+X+X*Z
+    dZ = -b*Z-X*Y
+    dV = Pr*(-d*V+(-e*Y*(cos(2.0*pi*v*t))**2)/d)
+    dW = -d*W+V
+    dNu = Z
+    return [dX, dY, dZ, dV, dW, dNu]
 
-n = ""
-if os_name == "Windows":
-    n = "odeslib.dll"
-elif os_name == "Linux":
-    n = "libodeslib.so"
-else:
-     print("Неизвестная ОС")
-lib = CDLL(f"app/extensions/{n}")
 
 def solution(name_config):
     with open(f'configs/{name_config}.json') as f:
@@ -25,36 +32,37 @@ def solution(name_config):
     if not os.path.exists(path_solutions):
         os.makedirs(path_solutions)
 
-    E = config["control_constants"]["e"]
-    V = config["control_constants"]["v"]
+    e_start, e_stop, e_step = config["control_constants"]["e"]
+    E = np.arange(e_start, e_stop+e_step, e_step)
+    v_start, v_stop, v_step = config["control_constants"]["v"]
+    V = np.arange(v_start, v_stop+v_step, v_step)
 
     t0 = config["algorithm_settings"]["t0"]
     t_end = config["algorithm_settings"]["t_end"]
-    tol = config["algorithm_settings"]["tol"]
-    h_init = config["algorithm_settings"]["h_init"]
-    h_min = config["algorithm_settings"]["h_min"]
-    h_max = config["algorithm_settings"]["h_max"]
-    # continue_by_par = config["algorithm_settings"]["continue_by_par"]
+    atol = config["algorithm_settings"]["atol"]
+    rtol = config["algorithm_settings"]["rtol"]
+    continue_by_par = config["algorithm_settings"]["continue_by_par"]
 
     initial_conditions = []
     for name in config["initial_conditions"]:
         initial_conditions.append(config["initial_conditions"][name])
 
-    seq = c_longdouble * len(initial_conditions)
-    init = seq(*initial_conditions)
-
     name = path_solutions + f'/nusselt e={E[0]}-{E[1]}; v={V[0]}-{V[1]}.csv'
-
-    seq = c_longdouble * len(E)
-    E = seq(*E)
-    V = seq(*V)
          
     name_columns = ['e', 'v', 'Nu']
     with open(name, mode="w", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerow(name_columns)
-
-    lib.nusselt_number(name.encode('utf-8'), E, V, init, c_double(t0),
-                    c_double(t_end), c_double(tol), c_double(h_init),
-                    c_double(h_min), c_double(h_max))
+        writer = csv.writer(file)
+        writer.writerow(name_columns)
+        for e in E:
+            for v in V:
+                def f(t, state):
+                    const = [e, v]
+                    return sys(const, t, state)
+                
+                sol = solve_ivp(f, (t0, t_end), initial_conditions, t_eval=[t0, t_end],
+                                rtol=rtol, atol=atol)
+                writer.writerow([e, v, sol.y[5][-1]])
+                if continue_by_par:
+                    initial_conditions = [sol.y[0][-1],sol.y[1][-1],
+                                 sol.y[2][-1],sol.y[3][-1],sol.y[4][-1], 0.0]
             
