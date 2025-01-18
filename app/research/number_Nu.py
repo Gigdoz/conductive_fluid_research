@@ -47,7 +47,7 @@ def solution(name_config):
     for name in config["initial_conditions"]:
         initial_conditions.append(config["initial_conditions"][name])
 
-    name = path_solutions + f'/nusselt e={E[0]}-{E[1]}; v={V[0]}-{V[1]}.csv'
+    name = path_solutions + f'/nusselt e={E[0]}-{E[-1]}; v={V[0]}-{V[-1]}.csv'
          
     name_columns = ['e', 'v', 'Nu']
     with open(name, mode="w", newline="") as file:
