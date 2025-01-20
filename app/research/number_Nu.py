@@ -6,18 +6,18 @@ from math import *
 from scipy.integrate import solve_ivp
 
 Pr = 100.0
-r = .0
 k = 0.962
 b = 4/(1+k**2)
 d = (4+k**2)/(1+k**2)
 
-def sys(const, t, state):
-    e, v = const
+def sys(t, state, e, v):
     X, Y, Z, V, W, Nu_y = state
-    dX = Pr*(-X+e*W*(cos(2.0*pi*v*t))**2)
+
+    cos_2 = (cos(2.0*pi*v*t))**2
+    dX = Pr*(-X+e*W*cos_2)
     dY = -Y+X+X*Z
     dZ = -b*Z-X*Y
-    dV = Pr*(-d*V+(-e*Y*(cos(2.0*pi*v*t))**2)/d)
+    dV = -Pr*(d*V+e*Y*cos_2/d)
     dW = -d*W+V
     dNu = Z
     return [dX, dY, dZ, dV, dW, dNu]
@@ -55,11 +55,8 @@ def solution(name_config):
         writer.writerow(name_columns)
         for e in E:
             for v in V:
-                def f(t, state):
-                    const = [e, v]
-                    return sys(const, t, state)
-                
-                sol = solve_ivp(f, (t0, t_end), initial_conditions, t_eval=[t0, t_end],
+                sol = solve_ivp(sys, (t0, t_end), initial_conditions,
+                                t_eval=[t0, t_end], args=(e, v),
                                 rtol=rtol, atol=atol)
                 Nu = 1 - 2 / (t_end - t0) * sol.y[5][-1]
                 writer.writerow([e, v, Nu])

@@ -6,18 +6,18 @@ import os
 from scipy.integrate import solve_ivp
 
 Pr = 100.0
-r = .0
 k = 0.962
 b = 4/(1+k**2)
 d = (4+k**2)/(1+k**2)
 
-def sys(const, t, state):
-    e, v = const
+def sys(t, state, e, v):
     X, Y, Z, V, W, Nu_y = state
-    dX = Pr*(-X+e*W*(cos(2.0*pi*v*t))**2)
+
+    cos_2 = (cos(2.0*pi*v*t))**2
+    dX = Pr*(-X+e*W*cos_2)
     dY = -Y+X+X*Z
     dZ = -b*Z-X*Y
-    dV = Pr*(-d*V+(-e*Y*(cos(2.0*pi*v*t))**2)/d)
+    dV = -Pr*(d*V+e*Y*cos_2/d)
     dW = -d*W+V
     dNu = Z
     return [dX, dY, dZ, dV, dW, dNu]
@@ -69,12 +69,12 @@ def solution(name_config):
                 writer = csv.writer(file)
                 writer.writerow(name_columns)
                 if output_step == 0:
-                    sol = solve_ivp(f, [t0, t_end], initial_conditions,
-                                       rtol=rtol, atol=atol)
+                    sol = solve_ivp(sys, [t0, t_end], initial_conditions,
+                                    args=(e,v), rtol=rtol, atol=atol)
                 else:
                     x_pts = np.arange(t0, t_end + output_step, output_step)
-                    sol = solve_ivp(f, (t0, t_end), initial_conditions, t_eval=x_pts,
-                                       rtol=rtol, atol=atol)
+                    sol = solve_ivp(sys, (t0, t_end), initial_conditions, t_eval=x_pts,
+                                    args=(e,v), rtol=rtol, atol=atol)
                     
                 for i in range(len(sol.t)):
                     writer.writerow([sol.t[i], sol.y[0][i],sol.y[1][i],
