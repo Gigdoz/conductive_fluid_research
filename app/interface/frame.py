@@ -32,14 +32,9 @@ def create_frames_solution(self):
     tk.Label(self, text="control_constants").pack()
     frame = tk.Frame(self, bd=2, relief=tk.SOLID, padx=10, pady=10)
 
-    # def checkbutton_changed():
-    #     if enabled.get() == 1:
-    #         showinfo(title="Info", message="Включено")
-    #     else:
-    #         showinfo(title="Info", message="Отключено")
-
     enabled = tk.IntVar(self)
-    enabled_checkbutton = ttk.Checkbutton(frame, text="series", variable=enabled)
+    enabled.set(1)
+    enabled_checkbutton = ttk.Checkbutton(frame, text="series", variable=enabled, onvalue=1, offvalue=0)
     enabled_checkbutton.grid(row=0, column=0, sticky=tk.W, pady=10)
 
     label = tk.Label(frame, text="e")

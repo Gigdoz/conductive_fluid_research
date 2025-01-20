@@ -205,13 +205,13 @@ class PlotWindow(tk.Toplevel):
     def create_frames_heat_map(self):
         frame = tk.Frame(self, bd=2, relief=tk.SOLID, padx=10, pady=10)
 
-        label = tk.Label(frame, text="Укажите путь к директории")
+        label = tk.Label(frame, text="Укажите путь к файлу")
         label.grid(row=0, column=0, sticky=tk.W, pady=10)
         path_val = tk.StringVar(self)
         path_entr = ttk.Entry(frame, width=20, textvariable=path_val)
         path_entr.grid(row=0, column=1, pady=10, padx=10)
 
-        label = tk.Label(frame, text="Укажите путь для сохранения результатов")
+        label = tk.Label(frame, text="Укажите путь и название файла для сохранения результатов")
         label.grid(row=1, column=0, sticky=tk.W, pady=10)
         save_path_val = tk.StringVar(self)
         save_path_entr = ttk.Entry(frame, width=20, textvariable=save_path_val)
@@ -227,7 +227,7 @@ class PlotWindow(tk.Toplevel):
     def create_frames_nu(self):
         frame = tk.Frame(self, bd=2, relief=tk.SOLID, padx=10, pady=10)
 
-        label = tk.Label(frame, text="Укажите путь к директории")
+        label = tk.Label(frame, text="Укажите путь к файлу")
         label.grid(row=0, column=0, sticky=tk.W, pady=10)
         path_val = tk.StringVar(self)
         path_entr = ttk.Entry(frame, width=20, textvariable=path_val)
@@ -243,13 +243,13 @@ class PlotWindow(tk.Toplevel):
     def create_frames_nu_transition(self):
         frame = tk.Frame(self, bd=2, relief=tk.SOLID, padx=10, pady=10)
 
-        label = tk.Label(frame, text="Укажите путь к директории")
+        label = tk.Label(frame, text="Укажите путь к файлу")
         label.grid(row=0, column=0, sticky=tk.W, pady=10)
         path_val = tk.StringVar(self)
         path_entr = ttk.Entry(frame, width=20, textvariable=path_val)
         path_entr.grid(row=0, column=1, pady=10, padx=10)
 
-        label = tk.Label(frame, text="Укажите путь для сохранения результатов")
+        label = tk.Label(frame, text="Укажите путь и название файла для сохранения результатов")
         label.grid(row=1, column=0, sticky=tk.W, pady=10)
         save_path_val = tk.StringVar(self)
         save_path_entr = ttk.Entry(frame, width=20, textvariable=save_path_val)
