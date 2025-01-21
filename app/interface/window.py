@@ -70,15 +70,15 @@ class MainWindow(tk.Tk):
 
     def create_series_time(self):
         win = PlotWindow(self, "График временного ряда")
-        win.create_frames("Выберити гармонику", plot.plot)
+        win.create_frames("Введите гармонику", plot.plot)
 
     def create_fft(self):
         win = PlotWindow(self, "Фурье преобразование")
-        win.create_frames("Выберити гармонику", fft_analysis.plot_fft)
+        win.create_frames("Введите гармонику", fft_analysis.plot_fft)
 
     def create_phase(self):
         win = PlotWindow(self, "Фазовый портрет")
-        win.create_frames("", phase_portrait.plot_phase)
+        win.create_frames("Введите 2 гармоники", phase_portrait.plot_phase)
 
     def create_heat_map(self):
         win = PlotWindow(self, "Тепловая карта")
