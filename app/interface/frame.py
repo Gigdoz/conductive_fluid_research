@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.messagebox import showinfo
-import json
 
 
 def fill_in_frame(self, frame, data, width, row, names_and_amp):

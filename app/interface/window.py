@@ -4,7 +4,7 @@ import json
 import threading
 
 from .frame import create_frames_nu, create_frames_solution
-from .util import unpack, Event
+from .util import unpack
 from app.research import solution, number_Nu
 from app.research.analysis import fft_analysis, phase_portrait, plot, plot_2d_nusselt, plot_3d_nusselt, nusselt_transition_plot
 

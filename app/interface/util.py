@@ -1,13 +1,3 @@
-class Event():
-    def __init__(self, state):
-        self.state = state
-    
-    def get_state(self):
-        return self.state
-    
-    def change_state(self):
-        self.state = not self.state
-
 def unpack(value):
     value = value.get()
     if isinstance(value, int):
