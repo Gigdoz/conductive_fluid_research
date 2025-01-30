@@ -6,6 +6,7 @@ setup(
     description="Расчетная программа с возможностью создания графиков разного вида.",
     options = {"build_exe": {"packages": ["pandas", "os", "numpy", "math",
                                            "json", "csv", "scipy", "matplotlib",
-                                             "tkinter", "threading"]}},
+                                             "threading"],
+                              "excludes": ["tkinter"]}},
     executables=[Executable("app.py", base = "Win32GUI")]
     )
