@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import json
 import threading
+import os
 
 from .frame import create_frames_nu, create_frames_solution
 from .util import unpack
@@ -106,6 +107,10 @@ class InputSettingsWindow(tk.Toplevel):
             for key, value in data.items():
                 for k, val in value.items():
                     data[key][k] = unpack(val)
+
+            if not os.path.exists('configs'):
+                os.makedirs('configs')
+                
             with open(f'configs/{frames.__name__}.json', 'w') as f:
                 json.dump(data, f, indent=4)
             self.destroy()

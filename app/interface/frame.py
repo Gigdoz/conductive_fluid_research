@@ -106,11 +106,8 @@ def create_frames_nu(self):
     frame = tk.Frame(self, bd=2, relief=tk.SOLID, padx=10, pady=10)
 
     al_set = [("t0",0), ("t_end",10), ("atol",1e-6), ("rtol",1e-3)]
-    enabled = tk.IntVar(self)
-    enabled_checkbutton = ttk.Checkbutton(frame, text="continue_by_par", variable=enabled)
-    enabled_checkbutton.grid(row=0, column=0, sticky=tk.W, pady=10)
 
-    data["algorithm_settings"] = dict(continue_by_par=enabled)
+    data["algorithm_settings"] = dict()
     fill_in_frame(self, frame, data["algorithm_settings"], 8, 1, al_set)
     frame.pack(anchor=tk.NW, fill=tk.X, padx=5, pady=5)
 

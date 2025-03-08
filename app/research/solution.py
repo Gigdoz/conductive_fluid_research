@@ -58,28 +58,31 @@ def solution(name_config):
     continue_by_par = config["algorithm_settings"]["continue_by_par"]
     output_step = config["algorithm_settings"]["output_step"]
 
-    for e in E:
-        for v in V:
-            name = path_solutions + f'/e={round(e, 3)}; v={round(v, 3)}.csv'
-            def f(t, state):
-                const = [e, v]
-                return sys(const, t, state)
+    params = []
+    for v in V:
+        for a in list(zip(E, len(E)*[v])):
+            params.append(a)
+        E = E[::-1]
+
+    for e, v in params:
+        name = path_solutions + f'/e={round(e, 6)}; v={round(v, 6)}.csv'
+        def f(t, state):
+            const = [e, v]
+            return sys(const, t, state)
             
-            with open(name, mode="w", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerow(name_columns)
-                if output_step == 0:
-                    sol = solve_ivp(sys, [t0, t_end], initial_conditions,
-                                    args=(e,v), rtol=rtol, atol=atol)
-                else:
-                    x_pts = np.arange(t0, t_end + output_step, output_step)
-                    sol = solve_ivp(sys, (t0, t_end), initial_conditions, t_eval=x_pts,
-                                    args=(e,v), rtol=rtol, atol=atol)
-                    
-                for i in range(len(sol.t)):
-                    writer.writerow([sol.t[i], sol.y[0][i],sol.y[1][i],
-                            sol.y[2][i],sol.y[3][i],sol.y[4][i], sol.y[5][i]])
+        with open(name, mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(name_columns)
+            x_pts = None
+            if output_step != 0:
+                x_pts = np.arange(t0, t_end + output_step, output_step)
+            sol = solve_ivp(sys, (t0, t_end), initial_conditions, t_eval=x_pts,
+                                args=(e,v), rtol=rtol, atol=atol)
+                
+            for i in range(len(sol.t)):
+                writer.writerow([sol.t[i], sol.y[0][i],sol.y[1][i],
+                        sol.y[2][i],sol.y[3][i],sol.y[4][i], sol.y[5][i]])
                         
-                if continue_by_par:
-                    initial_conditions = [sol.y[0][-1],sol.y[1][-1],
-                                 sol.y[2][-1],sol.y[3][-1],sol.y[4][-1], 0.0]
+            if continue_by_par:
+                initial_conditions = [sol.y[0][-1],sol.y[1][-1],
+                             sol.y[2][-1],sol.y[3][-1],sol.y[4][-1], 0.0]
