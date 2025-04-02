@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 from tqdm import tqdm
 
-# build_map_dinamic_modes/puancare.py
+# python build_map_dinamic_modes/solve_puancare.py
 
 # --- Параметры системы ---
 T_max = 80     # Время интегрирования
@@ -59,22 +59,26 @@ def poincare_map(P1, P2, state):
 
     return np.array(poincare_points)
 
-# Сохранение начальных условий для продолжение вычесления
-X0 = np.random.rand(5) * 2 - 1
 
-file = open("data/puancare/puancare_map.csv", mode="w", newline="")
-writer = csv.writer(file)
-writer.writerow(["e", "v", "amounts"])
+def solution(name_file):
+    # Сохранение начальных условий для продолжение вычесления
+    X0 = np.random.rand(5) * 2 - 1
 
-for i, P1 in enumerate(tqdm(P1_range, desc="Building Map")):
-    for j, P2 in enumerate(P2_range):
-        points = []
-        
-        # Если точек мало, считаем режим регулярным
-        amount = 0 # Регулярный режим (синий)
-        if len(points) >= 20:
-            # Считаем количество уникальных точек (порог P2_max*0.01 для группировки близких точек)
-            unique_points = np.unique(np.round(points, decimals=2), axis=0)
-            amount = len(unique_points)
-        writer.writerow([P1, P2, amount])
+    file = open(f"data/puancare/{name_file}", mode="a", newline="")
+    writer = csv.writer(file)
+    writer.writerow(["e", "v", "amounts"])
 
+    for i, P1 in enumerate(tqdm(P1_range, desc="Building Map")):
+        for j, P2 in enumerate(P2_range):
+            points = poincare_map(P1, P2, X0)
+            
+            # Если точек мало, считаем режим регулярным
+            amount = 0 # Регулярный режим (синий)
+            if len(points) >= 20:
+                # Считаем количество уникальных точек (порог P2_max*0.01 для группировки близких точек)
+                unique_points = np.unique(np.round(points, decimals=2), axis=0)
+                amount = len(unique_points)
+            writer.writerow([P1, P2, amount])
+
+import sys
+solution(sys.argv[1])
