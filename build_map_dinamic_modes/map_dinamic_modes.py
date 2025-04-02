@@ -22,3 +22,13 @@ plt.title("Карта динамических режимов")
 plt.xlabel("v")
 plt.ylabel("e")
 plt.show()
+
+# --- Добавление границ ---
+# Нахождение контуров с использованием plt.contour()
+# contours = plt.contour(
+#     P2_range, P1_range, map_data, 
+#     levels=[1.0001],  # Можно задать несколько уровней, например, [-0.1, 0, 0.1]
+#     colors='black'
+# )
+# plt.clabel(contours, fontsize=8)
+plt.show()
