@@ -64,21 +64,21 @@ def solution(name_file):
     # Сохранение начальных условий для продолжение вычесления
     X0 = np.random.rand(5) * 2 - 1
 
-    file = open(f"data/puancare/{name_file}", mode="a", newline="")
-    writer = csv.writer(file)
-    writer.writerow(["e", "v", "amounts"])
+    with open(f"data/puancare/{name_file}", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["e", "v", "amounts"])
 
-    for i, P1 in enumerate(tqdm(P1_range, desc="Building Map")):
-        for j, P2 in enumerate(P2_range):
-            points = poincare_map(P1, P2, X0)
-            
-            # Если точек мало, считаем режим регулярным
-            amount = 0 # Регулярный режим (синий)
-            if len(points) >= 20:
-                # Считаем количество уникальных точек (порог P2_max*0.01 для группировки близких точек)
-                unique_points = np.unique(np.round(points, decimals=2), axis=0)
-                amount = len(unique_points)
-            writer.writerow([P1, P2, amount])
+        for i, P1 in enumerate(tqdm(P1_range, desc="Building Map")):
+            for j, P2 in enumerate(P2_range):
+                points = poincare_map(P1, P2, X0)
+                
+                # Если точек мало, считаем режим регулярным
+                amount = 0 # Регулярный режим (синий)
+                if len(points) >= 20:
+                    # Считаем количество уникальных точек (порог P2_max*0.01 для группировки близких точек)
+                    unique_points = np.unique(np.round(points, decimals=2), axis=0)
+                    amount = len(unique_points)
+                writer.writerow([P1, P2, amount])
 
 import sys
 solution(sys.argv[1])
