@@ -66,10 +66,6 @@ def solution(name_config):
 
     for e, v in params:
         name = path_solutions + f'/e={round(e, 6)}; v={round(v, 6)}.csv'
-        def f(t, state):
-            const = [e, v]
-            return sys(const, t, state)
-            
         with open(name, mode="w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(name_columns)

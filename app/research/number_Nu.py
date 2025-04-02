@@ -47,7 +47,6 @@ class SolveSYS():
                             rtol=self.solve_options.rtol, atol=self.solve_options.atol)
             Nu = 1 - 2 / (self.solve_options.t_end - self.solve_options.t0) * sol.y[5][-1]
 
-
             queue.put([e, v, Nu])
             self.solve_options.initial_conditions = [sol.y[0][-1],sol.y[1][-1],
                                                     sol.y[2][-1],sol.y[3][-1],sol.y[4][-1], 0.0]
@@ -67,11 +66,6 @@ def solution(name_config):
     V = np.arange(v_start, v_stop+v_step, v_step)
 
     solve_sys = SolveSYS(SolveOptions(config))
-
-    params = []
-    for v in V:
-        for a in list(zip(E, len(E)*[v])):
-            params.append(a)
 
     manager = multiprocessing.Manager()
     queue = manager.Queue()

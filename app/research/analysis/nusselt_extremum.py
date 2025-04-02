@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Нет в приложении, служит как тестовый функционал
+
 def sort_by_param(df, param):
     if param == 'v':
         inv_param = 'e'
