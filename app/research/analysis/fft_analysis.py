@@ -8,7 +8,7 @@ def single_plot(dir_path, file, save_dir, mag, save_fft_data=None):
     df = pd.read_csv(dir_path + f'/{file}')
     dt = df.time[1] - df.time[0]
     # Примерной интервал сходимости алгоритма 4-6 ед.времени
-    n = int(4.0 / dt)
+    n = int(10.0 / dt)
     df = df[n:]
     N = len(df.time)
     n = int(1/(20*dt))

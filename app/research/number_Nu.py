@@ -7,22 +7,7 @@ from scipy.integrate import solve_ivp
 import multiprocessing
 import time
 
-Pr = 100.0
-k = 0.962
-b = 4/(1+k**2)
-d = (4+k**2)/(1+k**2)
-
-def sys(t, state, e, v):
-    X, Y, Z, V, W, _ = state
-
-    cos_2 = (cos(2.0*pi*v*t))**2
-    dX = Pr*(-X+e*W*cos_2)
-    dY = -Y+X+X*Z
-    dZ = -b*Z-X*Y
-    dV = -Pr*(d*V+e*Y*cos_2/d)
-    dW = -d*W+V
-    dNu = Z
-    return [dX, dY, dZ, dV, dW, dNu]
+from system import system
 
 class SolveOptions():
      def __init__(self, config):
@@ -41,7 +26,7 @@ class SolveSYS():
 
     def update(self, v, E, queue):
         for e in E:
-            sol = solve_ivp(sys, (self.solve_options.t0, self.solve_options.t_end),
+            sol = solve_ivp(system, (self.solve_options.t0, self.solve_options.t_end),
                             self.solve_options.initial_conditions,
                             t_eval=[self.solve_options.t0, self.solve_options.t_end], args=(e, v),
                             rtol=self.solve_options.rtol, atol=self.solve_options.atol)
