@@ -9,7 +9,7 @@ def plot_surf(path_file):
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
 
-    df = pd.read_csv(f'{path_file}.csv')
+    df = pd.read_csv(path_file)
     E = df.e.values
     V = df.v.values
     e = np.unique(E)

@@ -74,7 +74,7 @@ class SolveSYS():
                     with open(self.options.path_file, mode="a", newline="") as file:
                         writer = csv.writer(file)
                         for a in vals:
-                            writer.writerow([e, v, *a])
+                            writer.writerow([e, v, a])
     def solve_mp(self, E, V, n_processes=4):          
         processes = []
         parts = np.array_split(V, n_processes)
@@ -83,4 +83,3 @@ class SolveSYS():
             p.start()
             processes.append(p)
         [p.join() for p in processes]
-                

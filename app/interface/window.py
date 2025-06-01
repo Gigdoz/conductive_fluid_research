@@ -4,10 +4,10 @@ import json
 import threading
 import os
 
-from .frame import create_frames_nu, create_frames_solution
+from .frame import create_frames_nu, create_frames_solution, create_frames_puancare
 from .util import unpack
-from app.research import solution, number_Nu
-from app.research.analysis import fft_analysis, phase_portrait, plot, plot_2d_nusselt, plot_3d_nusselt, nusselt_transition_plot
+from app.research import solution, number_Nu, puancare
+from app.research.analysis import fft_analysis, phase_portrait, plot, plot_2d_nusselt, plot_3d_nusselt, nusselt_transition_plot, map_puancare
 
 
 class MainWindow(tk.Tk):
@@ -28,9 +28,14 @@ class MainWindow(tk.Tk):
         nu_menu.add_command(label="Настройки", command=self.open_input_window_Nu)
         nu_menu.add_command(label="Вычислить", command=self.calculate_Nu)
 
+        puancare_menu = tk.Menu(tearoff=0)
+        puancare_menu.add_command(label="Настройки", command=self.open_input_window_puancare)
+        puancare_menu.add_command(label="Вычислить", command=self.calculate_puancare)
+
         menu = tk.Menu(tearoff=0)
         menu.add_cascade(label="Временной ряд", menu=solution_menu)
         menu.add_cascade(label="Число Нуссельта", menu=nu_menu)
+        menu.add_cascade(label="Карта режимов динамической системы", menu=puancare_menu)
 
         main_menu.add_cascade(label="Решения", menu=menu)
 
@@ -45,9 +50,13 @@ class MainWindow(tk.Tk):
         nu_menu.add_command(label="График поверхности", command=self.create_surface)
         nu_menu.add_command(label="График для отдельного значения параметра", command=self.create_section)
 
+        p_menu = tk.Menu(tearoff=0)
+        p_menu.add_command(label="Тепловая карта", command=self.create_map_modes)
+
         menu = tk.Menu(tearoff=0)
         menu.add_cascade(label="Для временного ряда", menu=solution_menu)
         menu.add_cascade(label="Для числа Нуссельта", menu=nu_menu)
+        menu.add_cascade(label="Для сечения Пуанкаре", menu=p_menu)
 
         main_menu.add_cascade(label="Графики", menu=menu)
  
@@ -61,12 +70,20 @@ class MainWindow(tk.Tk):
         input_window = InputSettingsWindow(self)
         input_window.create_frames(create_frames_nu)
 
+    def open_input_window_puancare(self):
+        input_window = InputSettingsWindow(self)
+        input_window.create_frames(create_frames_puancare)
+
     def calculate_solution(self):
         input_window = SavingResultsWindow(self, solution.solution, create_frames_solution)
         input_window.create_frames()
 
     def calculate_Nu(self):
         input_window = SavingResultsWindow(self, number_Nu.solution, create_frames_nu)
+        input_window.create_frames()
+
+    def calculate_puancare(self):
+        input_window = SavingResultsWindow(self, puancare.solution, create_frames_puancare)
         input_window.create_frames()
 
     def create_series_time(self):
@@ -85,6 +102,10 @@ class MainWindow(tk.Tk):
         win = PlotWindow(self, "Тепловая карта")
         win.create_frames_heat_map()
 
+    def create_map_modes(self):
+        win = PlotWindow(self, "Карта режимов")
+        win.create_frames_map_modes()
+
     def create_surface(self):
         win = PlotWindow(self, "График поверхности")
         win.create_frames_nu()
@@ -100,7 +121,7 @@ class InputSettingsWindow(tk.Toplevel):
         self.title("Ввод информации")
         self.geometry("500x500")
         
-    def create_frames(self, frames):
+    def create_frames(self, frames, do_uppack=False):
         data = frames(self)
 
         def save_data():
@@ -216,7 +237,7 @@ class PlotWindow(tk.Toplevel):
         path_entr = ttk.Entry(frame, width=20, textvariable=path_val)
         path_entr.grid(row=0, column=1, pady=10, padx=10)
 
-        label = tk.Label(frame, text="Укажите путь и название файла для сохранения результатов")
+        label = tk.Label(frame, text="Укажите путь и название\n файла для сохранения результатов")
         label.grid(row=1, column=0, sticky=tk.W, pady=10)
         save_path_val = tk.StringVar(self)
         save_path_entr = ttk.Entry(frame, width=20, textvariable=save_path_val)
@@ -224,6 +245,28 @@ class PlotWindow(tk.Toplevel):
 
         def create_plot():
             plot_2d_nusselt.plot(path_val.get(), save_path_val.get())
+
+        button = tk.Button(frame, text="Построить", command=create_plot)
+        button.grid(row=3, column=0, pady=10, padx=10)
+        frame.pack(anchor=tk.NW, fill=tk.X, padx=5, pady=5)
+
+    def create_frames_map_modes(self):
+        frame = tk.Frame(self, bd=2, relief=tk.SOLID, padx=10, pady=10)
+
+        label = tk.Label(frame, text="Укажите путь к файлу")
+        label.grid(row=0, column=0, sticky=tk.W, pady=10)
+        path_val = tk.StringVar(self)
+        path_entr = ttk.Entry(frame, width=20, textvariable=path_val)
+        path_entr.grid(row=0, column=1, pady=10, padx=10)
+
+        label = tk.Label(frame, text="Укажите путь и название\n файла для сохранения результатов")
+        label.grid(row=1, column=0, sticky=tk.W, pady=10)
+        save_path_val = tk.StringVar(self)
+        save_path_entr = ttk.Entry(frame, width=20, textvariable=save_path_val)
+        save_path_entr.grid(row=1, column=1, pady=10, padx=10)
+
+        def create_plot():
+            map_puancare.plot(path_val.get(), save_path_val.get())
 
         button = tk.Button(frame, text="Построить", command=create_plot)
         button.grid(row=3, column=0, pady=10, padx=10)

@@ -18,7 +18,7 @@ def plot_phase(data_path, save_path, list_amp):
             ax.set_xlabel(x)
             ax.set_ylabel(y)
             ax.grid()
-            plt.savefig(save_path+f'/{file[:-4]}.png')
+            plt.savefig(save_path+f'/{file[:-4]}')
             plt.close('all')
 
 
@@ -39,7 +39,7 @@ def plot_phase3D(data_path, save_path, list_amp):
             ax.set_ylabel(y)
             ax.set_zlabel(z)
             ax.grid()
-            plt.savefig(save_path+f'/{file[:-4]}.png')
+            plt.savefig(save_path+f'/{file[:-4]}')
             plt.close('all')
 
 plot_phase3D("data/plot/e=160", "image/phase/e=160 X Z V", "X Z V")

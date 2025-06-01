@@ -7,7 +7,7 @@ def plot(path_file, save_path, val, col):
     fig = plt.figure()
     ax = fig.add_subplot()
 
-    df = pd.read_csv(f'{path_file}.csv')
+    df = pd.read_csv(path_file)
     if col == "e":
         df = df.loc[df[col] == val]
         ax.plot(df['v'], df['Nu'], 'k', lw=0.8)
@@ -26,5 +26,5 @@ def plot(path_file, save_path, val, col):
     if not os.path.exists(path_dir):
         os.makedirs(path_dir)
 
-    plt.savefig(f'{save_path}.png')
+    plt.savefig(save_path)
     plt.close()
